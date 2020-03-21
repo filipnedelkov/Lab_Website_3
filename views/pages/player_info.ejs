@@ -6,9 +6,9 @@
 			<div class="col-4">
 				<div class="card">
 				<!-- TODO: Modify the ejs code below, to conditionally set the image_src to be from our chosen player -->
-				  <% 
+				  <%
 				  var image_src = '../resources/img/helmet.jpg';
-				  
+
 				  %>
 				 <img class="card-img-top" id="player_img" src= "<%- image_src %>" alt="Image of Football Player">
 				  <div class="card-body mx-auto">
@@ -16,8 +16,17 @@
 						<select class="custom-select" name="player_choice" onchange="this.form.submit()">
 							 <option selected>Select Player</option>
 							 <!-- TODO: Populate our select with player options
-							 			For each player, set a new option with a value matching the palyer's id, 
+							 			For each player, set a new option with a value matching the player's id,
 							 			but will display the player's name-->
+									<%
+									if (all) {
+										var buttons = '';
+										all.forEach(function(item){
+												 buttons += "<button>"+all.name+"</button>";
+												 console.log(item);
+											 }); %>
+									<%- buttons %>
+									<% } %>
 						</select>
 					</form>
 				  </div>
@@ -31,7 +40,14 @@
 							 			If a player has been selected, fill in their information in each of the fields below.
 							 		    You'll need to calculate here the player's average rushing, receiving, and passing yards.-->
 							<th>Year</th>
-							<td>	</td>
+							<td>
+								<%
+								if (all) {
+								var test = 1;
+										 %>
+								<%- test %>
+								<% } %>
+							</td>
 						</tr>
 						<tr>
 							<th>Major</th>
@@ -58,5 +74,5 @@
 			</div>
 		</div>
 	</div>
-  
+
 <% include ../partials/footer %>

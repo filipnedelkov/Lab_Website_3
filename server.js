@@ -189,8 +189,8 @@ app.post('/home/pick_color', function(req, res) {
 
 app.get('/team_stats', function(req, res) {
 	var games_2018 = 'select * from football_games;';
-	var wins_count =  'select count(*) from football_games where home_score > visitor_score;';
-	var losses_count =  'select count(*) from football_games where home_score < visitor_score;';
+	var wins_count = 'select count(*) from football_games where home_score > visitor_score;';
+	var losses_count = 'select count(*) from football_games where home_score < visitor_score;';
 	db.task('get-everything', task => {
         return task.batch([
             task.any(games_2018),
@@ -214,6 +214,61 @@ app.get('/team_stats', function(req, res) {
               games: '',
               wins: '',
         			losses: ''
+            })
+    });
+});
+
+app.get('/player_info', function(req, res) {
+	var all_players = 'select id,name from football_players;';
+	db.task('get-everything', task => {
+        return task.batch([
+            task.any(all_players),
+        ]);
+    })
+    .then(info => {
+    	res.render('pages/player_info',{
+				my_title: "Player Info Page",
+        all: info[0],
+      })
+    })
+    .catch(err => {
+        // display error message in case an error
+            console.log('error', err);
+            response.render('pages/player_info', {
+              my_title: "Player Info Page",
+              all: '',
+            })
+    });
+});
+
+app.get('/player_info/select_player', function(req, res) {
+  var player_id = req.body.player_id;
+	var all_players = 'select id,name from football_players;';
+	var single_player = 'select * from football_players where id='+player_id+';';
+	var number_played = 'SELECT count(*) FROM football_games WHERE ANY(football_games.players)='+player_id+';';
+	db.task('get-everything', task => {
+        return task.batch([
+            task.any(all_players),
+            task.any(single_player),
+            task.any(number_played)
+        ]);
+    })
+    .then(info => {
+    	res.render('pages/player_info',{
+				my_title: "Player Info Page",
+        all: info[0],
+        single: info[1],
+  			num: info[2]
+      })
+    })
+    .catch(err => {
+        // display error message in case an error
+            console.log('error', err);
+            response.render('pages/player_info', {
+              my_title: "Player Info Page",
+              all: '',
+              single: '',
+        			num: ''
             })
     });
 });
