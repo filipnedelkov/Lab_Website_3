@@ -242,7 +242,7 @@ app.get('/player_info', function(req, res) {
 });
 
 app.get('/player_info/select_player', function(req, res) {
-  var player_id = req.body.player_id;
+  var player_id = req.query.input;
 	var all_players = 'select id,name from football_players;';
 	var single_player = 'select * from football_players where id='+player_id+';';
 	var number_played = 'SELECT count(*) FROM football_games WHERE ANY(football_games.players)='+player_id+';';

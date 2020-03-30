@@ -20,12 +20,12 @@
 							 			but will display the player's name-->
 									<%
 									if (all) {
-										var buttons = '';
+										var options	 = '';
 										all.forEach(function(item){
-												 buttons += "<button>"+all.name+"</button>";
+												 options += '<option onclick="console.log("test flag)">' + item.name + '</option>';
 												 console.log(item);
 											 }); %>
-									<%- buttons %>
+									<%- options %>
 									<% } %>
 						</select>
 					</form>
